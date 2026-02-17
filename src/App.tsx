@@ -10,6 +10,7 @@ import ControlPanel from './components/ControlPanel';
 import Fretboard from './components/Fretboard';
 import ChordDiagram from './components/ChordDiagram';
 import PlaybackControls from './components/PlaybackControls';
+import DiatonicChords from './components/DiatonicChords';
 
 type Mode = 'scale' | 'chord';
 
@@ -21,6 +22,13 @@ export default function App() {
   const [cagedForm, setCagedForm] = useState<CagedForm | null>(null);
   const [labelMode, setLabelMode] = useState<NoteLabel>('note');
   const [volume, setVolume] = useState(0.5);
+
+  const handleSelectDiatonicChord = (chordRoot: NoteName, suffix: string) => {
+    setRoot(chordRoot);
+    setChordType(suffix);
+    setCagedForm(null);
+    setMode('chord');
+  };
 
   const scale = SCALES[scaleIndex];
   const highlightedNotes = getScaleNotes(root, scale.intervals);
@@ -52,12 +60,19 @@ export default function App() {
             {title}
           </h2>
           {mode === 'scale' ? (
-            <Fretboard
-              root={root}
-              highlightedNotes={highlightedNotes}
-              mode="scale"
-              labelMode={labelMode}
-            />
+            <>
+              <Fretboard
+                root={root}
+                highlightedNotes={highlightedNotes}
+                mode="scale"
+                labelMode={labelMode}
+              />
+              <DiatonicChords
+                root={root}
+                intervals={scale.intervals}
+                onSelectChord={handleSelectDiatonicChord}
+              />
+            </>
           ) : (
             <ChordDiagram
               root={root}
