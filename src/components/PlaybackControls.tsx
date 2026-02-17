@@ -8,7 +8,7 @@ interface PlaybackControlsProps {
 
 export default function PlaybackControls({ frets, volume, onVolumeChange }: PlaybackControlsProps) {
   return (
-    <div className="flex items-center gap-3 mt-3">
+    <div className="flex items-center justify-center gap-3 mt-3">
       <button
         type="button"
         onClick={() => playChord(frets, volume)}

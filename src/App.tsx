@@ -53,8 +53,8 @@ export default function App() {
       {/* Fretboard - 上側・横幅いっぱい */}
       <section className="w-full px-4 pt-5 pb-2">
         <div className="bg-white rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-100 p-5">
-          <h2 className="text-2xl font-extrabold text-slate-700 mb-4 flex items-center gap-3">
-            <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-base font-extrabold">
+          <h2 className="text-4xl font-extrabold text-slate-700 mb-4 flex items-center gap-3">
+            <span className="text-4xl font-extrabold text-slate-700">
               {root}
             </span>
             {title}
