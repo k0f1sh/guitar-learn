@@ -9,7 +9,6 @@ interface Props {
 
 export default function DiatonicChords({ root, intervals, onSelectChord }: Props) {
   const chords = getDiatonicChords(root, intervals);
-  if (chords.length === 0) return null;
 
   // ディグリー表記をコード品質に合わせて生成
   const degreeLabels = chords.map((chord) => {
@@ -21,7 +20,7 @@ export default function DiatonicChords({ root, intervals, onSelectChord }: Props
   });
 
   return (
-    <div className="mt-4 flex flex-wrap gap-2 justify-center">
+    <div className="mt-4 flex flex-wrap gap-2 justify-center min-h-[3rem]">
       {chords.map((chord, i) => (
         <button
           key={chord.degree}
