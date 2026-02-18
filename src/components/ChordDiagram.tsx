@@ -46,13 +46,23 @@ export default function ChordDiagram({ root, chordType, labelMode, cagedForm }: 
   if (cagedForm) {
     const voicing = transposeCagedForm(cagedForm, chordType, root);
     if (!voicing) {
+      const fallback = CHORD_VOICINGS[`${root}-${chordType}`];
       return (
-        <div className="text-center py-12">
-          <div className="inline-flex items-center gap-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl px-5 py-3 text-sm font-medium">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
-            </svg>
-            {cagedForm} フォーム × {chordType} の組み合わせは未対応です
+        <div className="relative">
+          {fallback && <ChordNotes frets={fallback.frets} root={root} />}
+          <Fretboard
+            root={root}
+            highlightedNotes={[]}
+            mode="chord"
+            labelMode={labelMode}
+          />
+          <div className="absolute inset-0 flex items-center justify-center bg-white/60 rounded-xl">
+            <div className="inline-flex items-center gap-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl px-5 py-3 text-sm font-medium shadow">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+              {cagedForm} フォーム × {chordType} の組み合わせは未対応です
+            </div>
           </div>
         </div>
       );

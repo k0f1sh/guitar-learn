@@ -81,7 +81,7 @@ export default function App() {
               cagedForm={cagedForm}
             />
           )}
-          {chordFrets && (
+          {mode === 'chord' && (
             <PlaybackControls
               frets={chordFrets}
               volume={volume}
