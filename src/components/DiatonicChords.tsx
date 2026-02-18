@@ -20,7 +20,7 @@ export default function DiatonicChords({ root, intervals, onSelectChord }: Props
   });
 
   return (
-    <div className="mt-4 flex flex-wrap gap-2 justify-center min-h-[3rem]">
+    <div className="flex flex-wrap gap-2 justify-center min-h-[3rem]">
       {chords.map((chord, i) => (
         <button
           key={chord.degree}

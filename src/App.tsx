@@ -8,7 +8,7 @@ import type { NoteLabel } from './utils/music';
 import Header from './components/Header';
 import ControlPanel from './components/ControlPanel';
 import Fretboard from './components/Fretboard';
-import ChordDiagram from './components/ChordDiagram';
+import ChordDiagram, { ChordNotes } from './components/ChordDiagram';
 import PlaybackControls from './components/PlaybackControls';
 import DiatonicChords from './components/DiatonicChords';
 
@@ -65,19 +65,12 @@ export default function App() {
             {title}
           </h2>
           {mode === 'scale' ? (
-            <>
-              <Fretboard
-                root={root}
-                highlightedNotes={highlightedNotes}
-                mode="scale"
-                labelMode={labelMode}
-              />
-              <DiatonicChords
-                root={root}
-                intervals={scale.intervals}
-                onSelectChord={handleSelectDiatonicChord}
-              />
-            </>
+            <Fretboard
+              root={root}
+              highlightedNotes={highlightedNotes}
+              mode="scale"
+              labelMode={labelMode}
+            />
           ) : (
             <ChordDiagram
               root={root}
@@ -86,13 +79,26 @@ export default function App() {
               cagedForm={cagedForm}
             />
           )}
-          {mode === 'chord' && (
-            <PlaybackControls
-              frets={chordFrets}
-              volume={volume}
-              onVolumeChange={setVolume}
-            />
-          )}
+
+          {/* Shared bottom row: diatonic chords (scale) or chord notes + playback (chord) */}
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 min-h-[3.5rem]">
+            {mode === 'scale' ? (
+              <DiatonicChords
+                root={root}
+                intervals={scale.intervals}
+                onSelectChord={handleSelectDiatonicChord}
+              />
+            ) : (
+              <>
+                {chordFrets ? <ChordNotes frets={chordFrets} root={root} /> : <div />}
+                <PlaybackControls
+                  frets={chordFrets}
+                  volume={volume}
+                  onVolumeChange={setVolume}
+                />
+              </>
+            )}
+          </div>
         </div>
       </section>
 

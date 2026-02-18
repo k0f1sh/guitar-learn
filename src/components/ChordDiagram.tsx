@@ -16,10 +16,10 @@ function getChordNotesSorted(frets: number[], root: NoteName): NoteName[] {
   return unique;
 }
 
-function ChordNotes({ frets, root }: { frets: number[]; root: NoteName }) {
+export function ChordNotes({ frets, root }: { frets: number[]; root: NoteName }) {
   const notes = getChordNotesSorted(frets, root);
   return (
-    <div className="flex flex-wrap items-center gap-2 mb-3">
+    <div className="flex flex-wrap items-center gap-2">
       <span className="text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider">構成音</span>
       {notes.map((note) => (
         <div
@@ -46,10 +46,8 @@ export default function ChordDiagram({ root, chordType, labelMode, cagedForm }: 
   if (cagedForm) {
     const voicing = transposeCagedForm(cagedForm, chordType, root);
     if (!voicing) {
-      const fallback = CHORD_VOICINGS[`${root}-${chordType}`];
       return (
         <div className="relative">
-          {fallback && <ChordNotes frets={fallback.frets} root={root} />}
           <Fretboard
             root={root}
             highlightedNotes={[]}
@@ -68,17 +66,14 @@ export default function ChordDiagram({ root, chordType, labelMode, cagedForm }: 
       );
     }
     return (
-      <>
-        <ChordNotes frets={voicing.frets} root={root} />
-        <Fretboard
-          root={root}
-          highlightedNotes={[]}
-          mode="chord"
-          labelMode={labelMode}
-          chordFrets={voicing.frets}
-          chordFingers={voicing.fingers}
-        />
-      </>
+      <Fretboard
+        root={root}
+        highlightedNotes={[]}
+        mode="chord"
+        labelMode={labelMode}
+        chordFrets={voicing.frets}
+        chordFingers={voicing.fingers}
+      />
     );
   }
 
@@ -100,16 +95,13 @@ export default function ChordDiagram({ root, chordType, labelMode, cagedForm }: 
   }
 
   return (
-    <>
-      <ChordNotes frets={voicing.frets} root={root} />
-      <Fretboard
-        root={root}
-        highlightedNotes={[]}
-        mode="chord"
-        labelMode={labelMode}
-        chordFrets={voicing.frets}
-        chordFingers={voicing.fingers}
-      />
-    </>
+    <Fretboard
+      root={root}
+      highlightedNotes={[]}
+      mode="chord"
+      labelMode={labelMode}
+      chordFrets={voicing.frets}
+      chordFingers={voicing.fingers}
+    />
   );
 }

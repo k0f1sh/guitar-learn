@@ -143,6 +143,30 @@ export default function Fretboard({
         );
       })}
 
+      {/* Top position dots (above the fretboard) */}
+      {FRET_MARKERS.map((fret) => {
+        const cx = noteCenterX(fret);
+        const cy = PADDING_TOP - 24;
+        if (DOUBLE_MARKERS.includes(fret)) {
+          return (
+            <g key={`topdot-${fret}`}>
+              <circle cx={cx - 8} cy={cy} r={5} fill="var(--fb-inlay)" opacity={0.85} />
+              <circle cx={cx + 8} cy={cy} r={5} fill="var(--fb-inlay)" opacity={0.85} />
+            </g>
+          );
+        }
+        return (
+          <circle
+            key={`topdot-${fret}`}
+            cx={cx}
+            cy={cy}
+            r={5}
+            fill="var(--fb-inlay)"
+            opacity={0.85}
+          />
+        );
+      })}
+
       {/* Strings */}
       {Array.from({ length: NUM_STRINGS }, (_, i) => (
         <g key={`string-${i}`}>
