@@ -3,6 +3,7 @@ import { SCALES } from '../data/scales';
 import { CHORD_TYPES, CAGED_FORMS } from '../data/chords';
 import type { CagedForm } from '../data/chords';
 import type { NoteLabel } from '../utils/music';
+import CircleOfFifths from './CircleOfFifths';
 
 type Mode = 'scale' | 'chord';
 
@@ -94,10 +95,10 @@ export default function ControlPanel({
           </div>
         </div>
 
-        {/* Col 2: スケール or コードタイプ */}
-        <div>
+        {/* Col 2: スケール or コードタイプ + CAGED */}
+        <div className="space-y-4">
           {mode === 'scale' ? (
-            <>
+            <div>
               <label className="block text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
                 スケール
               </label>
@@ -116,119 +117,83 @@ export default function ControlPanel({
                   </button>
                 ))}
               </div>
-            </>
+            </div>
           ) : (
             <>
-              <label className="block text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
-                コードタイプ
-              </label>
-              <div className="grid grid-cols-3 gap-1.5">
-                {CHORD_TYPES.map((ct) => (
-                  <button
-                    key={ct.suffix}
-                    className={`py-3 rounded-xl text-base font-bold transition-all duration-200 ${
-                      chordType === ct.suffix
-                        ? 'bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-md shadow-indigo-200'
-                        : inactiveBtn
-                    }`}
-                    onClick={() => onChordTypeChange(ct.suffix)}
-                  >
-                    {ct.label}
-                  </button>
-                ))}
+              <div>
+                <label className="block text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
+                  コードタイプ
+                </label>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {CHORD_TYPES.map((ct) => (
+                    <button
+                      key={ct.suffix}
+                      className={`py-3 rounded-xl text-base font-bold transition-all duration-200 ${
+                        chordType === ct.suffix
+                          ? 'bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-md shadow-indigo-200'
+                          : inactiveBtn
+                      }`}
+                      onClick={() => onChordTypeChange(ct.suffix)}
+                    >
+                      {ct.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
+                  CAGED フォーム
+                </label>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {CAGED_FORMS.map((form) => (
+                    <button
+                      key={form}
+                      className={`py-3 rounded-xl text-base font-extrabold transition-all duration-200 ${
+                        cagedForm === form
+                          ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-200'
+                          : 'bg-slate-50 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:border-amber-300 dark:hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/30 hover:text-amber-600 dark:hover:text-amber-400 active:scale-95'
+                      }`}
+                      onClick={() => onCagedFormChange(cagedForm === form ? null : form)}
+                    >
+                      {form} フォーム
+                    </button>
+                  ))}
+                </div>
               </div>
             </>
           )}
         </div>
 
-        {/* Col 3: CAGED (コードモード時) or 凡例 */}
+        {/* Col 3: 五度圏 */}
         <div>
-          {mode === 'chord' ? (
-            <>
-              <label className="block text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
-                CAGED フォーム
-              </label>
-              <div className="grid grid-cols-3 gap-1.5">
-                {CAGED_FORMS.map((form) => (
-                  <button
-                    key={form}
-                    className={`py-3 rounded-xl text-base font-extrabold transition-all duration-200 ${
-                      cagedForm === form
-                        ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-200'
-                        : 'bg-slate-50 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:border-amber-300 dark:hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/30 hover:text-amber-600 dark:hover:text-amber-400 active:scale-95'
-                    }`}
-                    onClick={() => onCagedFormChange(cagedForm === form ? null : form)}
-                  >
-                    {form} フォーム
-                  </button>
-                ))}
-              </div>
-            </>
-          ) : (
-            <div className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-3">
-              <p className="text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">凡例</p>
-              <div className="flex flex-wrap gap-3 text-sm font-bold text-slate-600 dark:text-slate-300">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-4 h-4 rounded-full bg-gradient-to-br from-red-400 to-red-500 inline-block" />
-                  ルート音
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="w-4 h-4 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-500 inline-block" />
-                  スケール音
-                </span>
-              </div>
-            </div>
-          )}
+          <label className="block text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
+            Circle of Fifths
+          </label>
+          <CircleOfFifths root={root} onRootChange={onRootChange} />
         </div>
 
-        {/* Col 4: 表示切替 + 凡例(コード時) */}
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
-              表示
-            </label>
-            <div className="flex gap-1.5">
-              {LABEL_OPTIONS.map((opt) => (
-                <button
-                  key={opt.value}
-                  className={`flex-1 py-3 rounded-xl text-base font-extrabold transition-all duration-200 ${
-                    labelMode === opt.value
-                      ? 'bg-gradient-to-r from-slate-700 to-slate-800 text-white shadow-md'
-                      : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 hover:text-slate-700 dark:hover:text-slate-200'
-                  }`}
-                  onClick={() => onLabelModeChange(opt.value)}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-            {labelMode === 'finger' && (
-              <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">※ 指番号は正確でない場合があります</p>
-            )}
+        {/* Col 4: 表示切替 */}
+        <div>
+          <label className="block text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
+            表示
+          </label>
+          <div className="flex gap-1.5">
+            {LABEL_OPTIONS.map((opt) => (
+              <button
+                key={opt.value}
+                className={`flex-1 py-3 rounded-xl text-base font-extrabold transition-all duration-200 ${
+                  labelMode === opt.value
+                    ? 'bg-gradient-to-r from-slate-700 to-slate-800 text-white shadow-md'
+                    : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 hover:text-slate-700 dark:hover:text-slate-200'
+                }`}
+                onClick={() => onLabelModeChange(opt.value)}
+              >
+                {opt.label}
+              </button>
+            ))}
           </div>
-
-          {mode === 'chord' && (
-            <div className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-3">
-              <p className="text-xs font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">凡例</p>
-              <div className="flex flex-wrap gap-3 text-sm font-bold text-slate-600 dark:text-slate-300">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-4 h-4 rounded-full bg-gradient-to-br from-red-400 to-red-500 inline-block" />
-                  ルート
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="w-4 h-4 rounded-full bg-gradient-to-br from-emerald-300 to-emerald-400 inline-block" />
-                  コード音
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="text-rose-500 font-extrabold">×</span>
-                  ミュート
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="w-4 h-4 rounded-full border-2 border-slate-400 dark:border-slate-500 inline-block" />
-                  開放弦
-                </span>
-              </div>
-            </div>
+          {labelMode === 'finger' && (
+            <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">※ 指番号は正確でない場合があります</p>
           )}
         </div>
 

@@ -7,7 +7,6 @@ import { getScaleNotes, transposeCagedForm } from './utils/music';
 import type { NoteLabel } from './utils/music';
 import Header from './components/Header';
 import ControlPanel from './components/ControlPanel';
-import CircleOfFifths from './components/CircleOfFifths';
 import Fretboard from './components/Fretboard';
 import ChordDiagram from './components/ChordDiagram';
 import PlaybackControls from './components/PlaybackControls';
@@ -97,29 +96,22 @@ export default function App() {
         </div>
       </section>
 
-      {/* Control panel + 五度圏 */}
+      {/* Control panel */}
       <section className="w-full px-4 py-4">
-        <div className="flex flex-col md:flex-row gap-4 items-start">
-          <div className="w-full md:w-auto md:flex-shrink-0 flex items-center justify-center bg-white dark:bg-slate-800 rounded-2xl shadow-lg shadow-slate-200/50 dark:shadow-slate-900/50 border border-slate-100 dark:border-slate-700 p-5">
-            <CircleOfFifths root={root} onRootChange={setRoot} />
-          </div>
-          <div className="flex-1 min-w-0">
-            <ControlPanel
-              mode={mode}
-              onModeChange={setMode}
-              root={root}
-              onRootChange={setRoot}
-              scaleIndex={scaleIndex}
-              onScaleChange={setScaleIndex}
-              chordType={chordType}
-              onChordTypeChange={setChordType}
-              cagedForm={cagedForm}
-              onCagedFormChange={setCagedForm}
-              labelMode={labelMode}
-              onLabelModeChange={setLabelMode}
-            />
-          </div>
-        </div>
+        <ControlPanel
+          mode={mode}
+          onModeChange={setMode}
+          root={root}
+          onRootChange={setRoot}
+          scaleIndex={scaleIndex}
+          onScaleChange={setScaleIndex}
+          chordType={chordType}
+          onChordTypeChange={setChordType}
+          cagedForm={cagedForm}
+          onCagedFormChange={setCagedForm}
+          labelMode={labelMode}
+          onLabelModeChange={setLabelMode}
+        />
       </section>
     </div>
   );
